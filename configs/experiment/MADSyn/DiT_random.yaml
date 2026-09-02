@@ -1,0 +1,44 @@
+# @package _global_
+
+# to execute this experiment run:
+# python run.py experiment=example_full.yaml
+
+defaults:
+  - override /trainer: default
+  - override /model: DiT_random
+  - override /datamodule: data_create
+datamodule:
+  cfg:
+    rescaleFactor: 1
+    imageDim: [256,256,100]
+    mode: t2 
+model:
+  cfg:
+    timesteps: 1000 
+    test_timesteps: 500
+    dim_mults: [1,2,2,2]
+    unet_dim: 128
+    objective: pred_x0
+    loss: l2
+    residualmode: l2
+    OpenaiUnet: True # use openai unet
+    conv_resample: True
+    noisetype: simplex
+    dropout_unet: 0.1 
+    inchannels: 1
+    patch_size: 64 # size of the patches 
+    grid_boxes: False # sample boxes from a fixed grid
+    inpaint: True 
+  
+num_folds: 1
+logger:
+  wandb:
+    project: DiT_random
+
+ckpt_path: best 
+
+trainer:
+  max_epochs: 1000
+  precision: 32 
+
+name : DiT_random

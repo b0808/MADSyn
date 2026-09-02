@@ -1,0 +1,47 @@
+_target_: src.datamodules.Datamodules_train.data_create
+
+cfg:
+  name: data_create 
+  path:
+    pathBase: ${data_dir}
+  train_data_dir: ${oc.env:TRAIN_DATA_DIR,${data_dir}/train}
+  val_data_dir: ${oc.env:VAL_DATA_DIR,${data_dir}/val}
+  stats_file: ${oc.env:DATASET_STATS_FILE,${data_dir}/dataset_stats.json}
+
+  imageDim: [160,192,160] 
+  rescaleFactor: 1
+  interRes: [8,8,5] #[HxWxD]
+  cropMode: 'isotropic'
+  spatialDims: ${model.cfg.spatialDims}
+  unisotropic_sampling: True
+  sample_set: False
+
+  preLoad: True
+  curvatureFlow: True
+  percentile: True
+  pad: True
+  permute: False
+
+  # Augmentations
+  randomRotate: False
+  rotateDegree: 5
+  horizontalFlip: False
+  randomBrightness: False
+  brightnessRange: (0.75,1.25)
+  randomContrast: False
+  contrastRange: (0.75,1.25)
+  
+  modelpath: ${data_dir}/Data/pretrained_2D_model/
+  num_workers: 1
+  batch_size: 1
+  num_images_epoch_train: 1
+  num_images_epoch_val: 1
+  lr : 0.0001
+  droplast: True
+
+
+  # Evaluation
+  mode: t1
+  resizedEvaluation: True
+  testsets: # specify which test sets to evaluate!
+  - Datamodules_train.data_create
